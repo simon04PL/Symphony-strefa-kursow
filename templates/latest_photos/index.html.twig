@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} Strona główna{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mt-5 mb-4 h4">Najnowsze zdjęcia</h1>
+
+        {% for photo in latestPhotosPublic %}
+            {{ photo.filename }}
+        {% endfor %}
+    </div>
+{% endblock %}
