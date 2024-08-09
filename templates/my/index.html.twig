@@ -3,7 +3,7 @@
 {% block title %} {{ parent() }} Strona główna{% endblock %}
 
 {% block content %}
-    <div class="container">
+<div class="container">
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">
                 {{ message }}
@@ -19,7 +19,7 @@
 
         <div class="mt-5">
             <div class="row">
-                {% for photo in latestPhotosPublic %}
+                {% for photo in myPhotos %}
                     <div class="col-sm-12 col-lg-4">
                         <div class="card-deck">
                             <div class="card d-flex justify-content-between">
@@ -31,8 +31,12 @@
                                     <small class="text-muted">Dodał: {{ photo.user.username}}</small>
                                     <p>
                                         {% if photo.user == app.user %}
-                                            <a href="{{ path('my_photos_remove', {'id': photo.id}) }}" class="badge badge-danger">Usuń</a>                                    
-                                            <a href="{{ path('my_photos_set_as_private', {'id': photo.id}) }}" class="badge badge-primary">Ustaw prywatne</a>
+                                            <a href="{{ path('my_photos_remove', {'id': photo.id}) }}" class="badge badge-danger">Usuń</a>   
+                                            {% if photo.isPublic == '1' %}
+                                                <a href="{{ path('my_photos_set_as_private', {'id': photo.id}) }}" class="badge badge-primary">Ustaw prywatne</a>
+                                            {% else %}
+                                                <a href="{{ path('my_photos_set_as_public', {'id': photo.id}) }}" class="badge badge-success">Ustaw publiczne</a>
+                                            {% endif %}
                                         {% endif %}
                                     </p>
                                 </div>

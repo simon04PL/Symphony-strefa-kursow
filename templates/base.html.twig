@@ -25,7 +25,7 @@
                             <a class="nav-link" href="{{ path('latest_photos') }}">Najnowsze</a>
                         </li>
                         <li class="nav-item {% if app.request.get('_route') == 'my_photos' %}active{% endif %}">
-                            <a class="nav-link" href="#">Moje zdjęcia</a>
+                            <a class="nav-link" href="{{ path('my_photos') }}">Moje zdjęcia</a>
                         </li>    
                         {% if app.user %}             
                             <li class="nav-item">
