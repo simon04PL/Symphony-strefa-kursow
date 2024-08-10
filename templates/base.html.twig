@@ -6,6 +6,7 @@
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/css/simpleLightbox.min.css') }}">
         {% endblock %}
     </head>
     <body>
@@ -50,9 +51,11 @@
             </div>
         </footer>
         {% block javascripts %}
-            <script src="{{ asset('assets/js/jquery-3.5.1.min.js') }}"></script>
+            <script src="{{ asset('assets/js/jquery-3.4.1.slim.min.js') }}"></script>
             <script src="{{ asset('assets/js/popper.min.js') }}"></script>
             <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('assets/js/simpleLightbox.min.js') }}"></script>
+            <script src="{{ asset('assets/js/scripts.js') }}"></script>
         {% endblock %}
     </body>
 </html>

@@ -12,6 +12,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Service\PhotoVisibilityService;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -40,59 +41,20 @@ class MyController extends AbstractController
         ]);
     }
 
-    #[Route('/my/photos/set_private/{id}', name: 'my_photos_set_as_private')]
-    /**
-     * @param int $id
-     */
-    public function myPhotoSetAsPrivate(int $id, EntityManagerInterface $entityManager): RedirectResponse
+    #[Route('/my/photos/set_visibility/{id}/{visibility}', name: 'my_photos_set_visibility')]
+    public function myPhotoChangeVisibility(PhotoVisibilityService $photoVisibilityService, int $id, bool $visibility)
     {
-        $photoRepository = $entityManager->getRepository(Photo::class);
-        $myPhoto = $photoRepository->find($id);
-
-        if (!$myPhoto) {
-            throw $this->createNotFoundException('Photo not found.');
+        $messages = [
+            '1' => ' to public',
+            '0' => ' to private'
+        ];
+    
+        if ($photoVisibilityService->makeVisible($id, $visibility)) {
+            $this->addFlash('success', 'Visibility changed' . $messages[$visibility]);
+        } else {
+            $this->addFlash('error', 'You are not authorized to change visibility' . $messages[$visibility]);
         }
-
-        if ($this->getUser() !== $myPhoto->getUser()) {
-            throw new AccessDeniedException('You do not have permission to edit this photo.');
-        }
-        try {
-            $myPhoto->setIsPublic(false);
-            $entityManager->persist($myPhoto);
-            $entityManager->flush();
-            $this->addFlash('success', 'Photo set as private');
-        } catch (\Exception $e) {
-            $this->addFlash('error', 'Error setting photo as private');
-        }
-
-        return $this->redirectToRoute('my_photos');
-    }
-    #[Route('/my/photos/set_public/{id}', name: 'my_photos_set_as_public')]
-    /**
-     * @param int $id
-     */
-    public function myPhotoSetAsPublic(int $id, EntityManagerInterface $entityManager): RedirectResponse
-    {
-        $photoRepository = $entityManager->getRepository(Photo::class);
-        $myPhoto = $photoRepository->find($id);
-
-        if (!$myPhoto) {
-            throw $this->createNotFoundException('Photo not found.');
-        }
-
-        if ($this->getUser() !== $myPhoto->getUser()) {
-            throw new AccessDeniedException('You do not have permission to edit this photo.');
-        }
-
-        try {
-            $myPhoto->setIsPublic(true);
-            $entityManager->persist($myPhoto);
-            $entityManager->flush();
-            $this->addFlash('success', 'Photo set as private');
-        } catch (\Exception $e) {
-            $this->addFlash('error', 'Error setting photo as private');
-        }
-
+    
         return $this->redirectToRoute('my_photos');
     }
 

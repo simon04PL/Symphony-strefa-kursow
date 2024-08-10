@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Photo;
@@ -9,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LatestPhotoController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
+    private readonly EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -19,8 +20,8 @@ class LatestPhotoController extends AbstractController
     #[Route('/latest', name: 'latest_photos')]
     public function index(): Response
     {
-        $latestPhotosPublic = $this->entityManager->getRepository(Photo::class)
-            ->findBy(['is_public' => true]);
+        // Zakładam, że metoda `findAllPublic` jest zdefiniowana w repozytorium `PhotoRepository`
+        $latestPhotosPublic = $this->entityManager->getRepository(Photo::class)->findAllPublic();
 
         return $this->render('latest_photos/index.html.twig', [
             'latestPhotosPublic' => $latestPhotosPublic,

@@ -32,7 +32,7 @@
                                     <p>
                                         {% if photo.user == app.user %}
                                             <a href="{{ path('my_photos_remove', {'id': photo.id}) }}" class="badge badge-danger">Usuń</a>                                    
-                                            <a href="{{ path('my_photos_set_as_private', {'id': photo.id}) }}" class="badge badge-primary">Ustaw prywatne</a>
+                                            <a href="{{ path('my_photos_set_visibility', {'id': photo.id, 'visibility': '0'}) }}" class="badge badge-primary">Ustaw prywatne</a>
                                         {% endif %}
                                     </p>
                                 </div>
